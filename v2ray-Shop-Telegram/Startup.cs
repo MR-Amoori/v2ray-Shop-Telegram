@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using v2ray_Shop_Telegram.Data;
 
 namespace v2ray_Shop_Telegram
 {
@@ -20,13 +22,15 @@ namespace v2ray_Shop_Telegram
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+      
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<v2rayShopContext>(options => options.UseSqlServer(@"Data Source=.;Initial Catalog=v2ray_Shop_DB;Integrated Security=True; MultipleActiveResultSets=true"));
+            //services.AddDbContext<LinkShortenerContext>(options => options.UseSqlServer(@"Data Source=.\MSSQLSERVER2019;Initial Catalog=kalamar1_minilink_DB;User Id=kalamar1_minilink_us;password=Mohamad_021 ;MultipleActiveResultSets=true"));
             services.AddControllersWithViews();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+     
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -36,7 +40,7 @@ namespace v2ray_Shop_Telegram
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
