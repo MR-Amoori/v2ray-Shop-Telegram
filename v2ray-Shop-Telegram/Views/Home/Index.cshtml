@@ -1,8 +1,36 @@
-﻿@{
+﻿@model BotModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <br />
+
+    <form asp-action="AddBot" asp-controller="Bot" method="post">
+        <div class="form-group">
+            <label asp-for="BotName" class="control-label"> نام ربات</label>
+            <input asp-for="BotName" class="form-control" />
+            <span asp-validation-for="BotName" class="text-danger"></span>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <label asp-for="BotToken" class="control-label">توکن ربات</label>
+            <input asp-for="BotToken" class="form-control" />
+            <span asp-validation-for="BotToken" class="text-danger"></span>
+        </div>
+
+        <br />
+
+        <div class="form-group">
+            <input type="submit" value="ثبت" class="btn btn-success" />
+        </div>
+    </form>
 </div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

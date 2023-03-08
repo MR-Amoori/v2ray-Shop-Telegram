@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -7,6 +8,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using v2ray_Shop_Telegram.Data;
+using v2ray_Shop_Telegram.Models;
 
 namespace v2ray_Shop_Telegram.Controllers
 {
@@ -32,7 +34,7 @@ namespace v2ray_Shop_Telegram.Controllers
             botThread = new Thread(new ThreadStart(runBot));
             botThread.Start();
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
 
         public void Stop()
@@ -42,12 +44,15 @@ namespace v2ray_Shop_Telegram.Controllers
 
         void runBot()
         {
-            KeyboardButton[] row1 = { new KeyboardButton("🔧 " + "ابزار های ربات" + " 🔧")/*, new KeyboardButton("📝" + " لیست " + "📝")*/ };
-            KeyboardButton[] row2 = { new KeyboardButton("📒 " + "راهنما" + " 📒"), new KeyboardButton("👨🏻‍💻 " + "درباره برنامه نویس" + " 👨🏻‍💻") };
-            mainKeyboardMarkup.Keyboard = new KeyboardButton[][] { row1, row2 };
-            mainKeyboardMarkup = new ReplyKeyboardMarkup(mainKeyboardMarkup.Keyboard);
+            List<KeyboardButton> keyboardButtons = new List<KeyboardButton>()
+            {
+                new KeyboardButton("🔧 " + "شروع مجدد" + " 🔧"),
+                new KeyboardButton("📒 " + "راهنما" + " 📒"),
+            };
 
-            Token = _context.Bots.FirstOrDefault().BotToken;
+            mainKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButtons);
+
+            Token = "6019278623:AAGrvsrExUtcXYzm7keU-HvWX9CgLgVN8Y8";
             bot = new TelegramBotClient(Token);
             int offset = 0;
             while (true)
@@ -74,15 +79,15 @@ namespace v2ray_Shop_Telegram.Controllers
                     var chatId = up.Message.Chat.Id;
 
 
-                    if (text.Contains("/start"))
+                    if (text.Contains("/start")|| text.Contains("🔧 شروع مجدد 🔧"))
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.AppendLine($"سلام {from.FirstName} خوش آمدید 🌹");
-                        sb.AppendLine("درباره برنامه نویس : /AboutUs");
+                        sb.AppendLine("");
                         sb.AppendLine("راهنما : /Help");
                         sb.AppendLine("");
                         sb.AppendLine("🤖 @NameDN_bot 🤖");
-                        bot.SendTextMessageAsync(chatId, sb.ToString(), ParseMode.Html, default, default,default,default,default,default,mainKeyboardMarkup);
+                        bot.SendTextMessageAsync(chatId, sb.ToString(), ParseMode.Html, default, default, default, default, default, default, mainKeyboardMarkup);
                     }
 
 
@@ -92,5 +97,34 @@ namespace v2ray_Shop_Telegram.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult AddBot(BotModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    BotModel modelResult = new BotModel()
+                    {
+                        BotName = model.BotName,
+                        BotToken = model.BotToken
+                    };
+                    _context.Bots.Add(modelResult);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "ناموفق");
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            else
+            {
+                ModelState.AddModelError("", "ناموفق");
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }
