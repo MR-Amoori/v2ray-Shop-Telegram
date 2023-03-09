@@ -47,7 +47,7 @@ namespace v2ray_Shop_Telegram.Controllers
             List<KeyboardButton> keyboardButtons = new List<KeyboardButton>()
             {
                 new KeyboardButton("🔧 " + "شروع مجدد" + " 🔧"),
-                new KeyboardButton("📒 " + "راهنما" + " 📒"),
+                new KeyboardButton("📒 " + "خرید" + " 📒"),
             };
 
             mainKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButtons);
@@ -90,8 +90,10 @@ namespace v2ray_Shop_Telegram.Controllers
                         bot.SendTextMessageAsync(chatId, sb.ToString(), ParseMode.Html, default, default, default, default, default, default, mainKeyboardMarkup);
                     }
 
-
-
+                    else if (text.Contains("📒 خرید 📒"))
+                    {
+                        
+                    }
                 }
             }
         }
