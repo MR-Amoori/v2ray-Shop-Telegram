@@ -5,32 +5,14 @@
 
 <div class="text-center">
     <br />
-
-    <form asp-action="AddBot" asp-controller="Bot" method="post">
-        <div class="form-group">
-            <label asp-for="BotName" class="control-label"> نام ربات</label>
-            <input asp-for="BotName" class="form-control" />
-            <span asp-validation-for="BotName" class="text-danger"></span>
-        </div>
-        <br />
-
-        <div class="form-group">
-            <label asp-for="BotToken" class="control-label">توکن ربات</label>
-            <input asp-for="BotToken" class="form-control" />
-            <span asp-validation-for="BotToken" class="text-danger"></span>
-        </div>
-
-        <br />
-
-        <div class="form-group">
-            <input type="submit" value="ثبت" class="btn btn-success" />
-        </div>
-    </form>
+    <a class="btn btn-success" asp-action="Start" asp-controller="Bot">شروع ربات</a>
+    <br />
+    <a class="btn btn-danger" asp-action="Stop" asp-controller="Bot">توقف ربات</a>
 </div>
 
 
-@section Scripts {
+@*@section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+}*@
