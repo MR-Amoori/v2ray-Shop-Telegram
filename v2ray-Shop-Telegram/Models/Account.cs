@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace v2ray_Shop_Telegram.Models
@@ -13,5 +14,8 @@ namespace v2ray_Shop_Telegram.Models
         public float Wallet { get; set; }
 
         public DateTime RegisterDate { get; set; }
+
+        public List<Config> Configs { get; set; }
+
     }
 }
